@@ -5,47 +5,68 @@ namespace Model;
 class Exemple extends Model
 {
 
-    protected $table = "exemple";
+    protected $table = "exemples";
 
-    public $id;
-    public $pro1;
-    public $pro2;
-    public $user_id;
+    public $id , $proriete1, $propriete2, $user_id;
 
 
+ 
+
+    
     /**
-     * @param string $pro1
-     * @param string $pro2
-     *
-     * ajout d'un exemple
+     * crée un nouvel exemple
+     * 
+     * @param string $propriete1
+     * @param string $propriete2
+     * @return void
      */
-    function insert(string $pro1, string $pro2) : void
+
+    public function insert(string $proriete1, string $propriete2):void
     {
 
-        $maRequeteCreateGateau = $this->pdo->prepare("
-        INSERT INTO `exemples` (`pro1`, `pro2`) VALUES (:pro1, :pro2)");
+        $maRequete = $this->pdo->prepare("INSERT INTO exemples (propriete1, propriete2) 
+        VALUES (:propriete1, :propriete2)");
 
-        $maRequeteCreateGateau->execute([
-            'pro1' => $pro1,
-            'pro2' => $pro2,
-        ]);
+          $maRequete->execute([
+          'propriete1' => $propriete1,
+          'propriete2' => $propriete2
+       
+
+          ]);
+
+
+
     }
     /**
-     * @param int $id
-     * @param string $pro1
-     * @param string $pro2
-     *
-     * update d'un exemple
+     * 
+     * modifie un exemple
      */
-    function update(int $id, string $pro1, string $pro2) : void
+    public function update(string $propriete1, string $propriete2, int $id) : void
     {
 
-        $maRequeteUpdateGateau = $this->pdo->prepare("UPDATE exemple SET pro1=:pro1,pro1=:pro2 WHERE id=:id");
+        
 
-        $maRequeteUpdateGateau->execute([
-            'id' => $id,
-            'pro1' => $pro1,
-            'pro2' => $pro2,
-        ]);
+        $maRequete = $this->pdo->prepare("UPDATE gateaux 
+        SET propriete1=:propriete1, propriete2 = :propriete2 
+        WHERE id = :id");
+
+          $maRequete->execute([
+          'propriete1' => $propriete1,
+          'propriete2' => $propriete2,
+          'id' => $id
+       
+
+          ]);
+
+
+
     }
+
+    public function findAuthor()
+    {
+      return  $this->find($this->user_id, \Model\User::class, "autreTable");
+       
+    }
+
+
 }

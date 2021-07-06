@@ -1,117 +1,183 @@
 <?php
 
-
 namespace Controllers;
-
-
 
 class Exemple extends Controller
 {
 
     protected $modelName = \Model\Exemple::class;
-    
 
 
     /**
-     * afficher l'accueil du site
-     *
-     *
+     * 
+     * affiche la liste des gateaux
      */
-
     public function index()
-    {
-
-
-        //$exemple = $this->model->findAll($this->modelName);
-
-        
-        // $modelUser = new \Model\User();
-        // $user = $modelUser->getUser();
-
-        //on fixe le titre de la page
-        // $titreDeLaPage = "titre d'une page";
-
-        //on affiche
-        \Rendering::render("exemple/exemple",
-            compact('user', 'exemple', 'titreDeLaPage')
-        );
-
-    }
-
-    public function indexApi()
-    {
-
-        //$exemple = $this->model->findAll($this->modelName);
-
-        
-        // $modelUser = new \Model\User();
-        // $user = $modelUser->getUser();
-
-        header('Access-Control-Allow-Origin: *');
-
-        //Json
-        echo json_encode(["test1"=>"truc1",
-                          "test2"=>"truc2"]);
-
-    }
-
     
-    public function show(){
-
-
-
-        // $exemple_id = null;
-
-        // if(!empty($_GET['id']) && ctype_digit($_GET['id'])){
-
-        //     $exemple_id = $_GET['id'];
-        // }
-
-        // if(!$exemple_id){
-        //     die("il faut absolument entrer un id dans l'url pour que le script fonctionne");
-        // }
-
-
-
-        // $exempleUn = $this->model->find($exemple_id);
-
-        // $modelAutreExemple = new \Model\AutreExemple();
-        // $classAutreExemple = \Model\AutreExemple::class;
-        // $AutreExemple = $modelAutreExemple->findAllByGateau($exemple_id, $classAutreExemple);
+    {
         
-        // $titreDeLaPage = $exempleUn->name;
 
-        \Rendering::render('exemple/unObjectExemple',
-            compact('exempleUn', 'AutreExemple','titreDeLaPage')
-        );
-    }
-    public function showApi(){
-
-
-
-        // $exemple_id = null;
-
-        // if(!empty($_GET['id']) && ctype_digit($_GET['id'])){
-
-        //     $exemple_id = $_GET['id'];
-        // }
-
-        // if(!$exemple_id){
-        //     die("il faut absolument entrer un id dans l'url pour que le script fonctionne");
-        // }
-
-
-
-        // $exempleUn = $this->model->find($exemple_id);
-
-        // $modelAutreExemple = new \Model\AutreExemple();
-        // $classAutreExemple = \Model\AutreExemple::class;
-        // $AutreExemple = $modelAutreExemple->findAllByGateau($exemple_id, $classAutreExemple);
+           /*  $userModel = new \Model\User();
+             $user = $userModel->getUser(); */
         
-        header("Access-Control-Allow-Origin: *");
+           
 
-        //Json
-        // echo json_encode(['exempleUn' => $exempleUn, 
-        //                   'AutreExemple' => $AutreExemple]);
+
+     /*  $donneesExemple = $this->model->findAll($this->modelName); */
+         
+
+
+       /*  $titreDeLaPage = "Le titre de la page"; */
+
+       /*  \Rendering::render('exemples/exemple', compact('user','donneesExemple','titreDeLaPage')); */
     }
-}    
+    public function indexApi()
+    
+    {
+        
+
+            /* $userModel = new \Model\User();
+             $user = $userModel->getUser(); */
+        
+           
+
+
+     // $donneesExemple = $this->model->findAll($this->modelName);
+
+     $donneesExemple = ["truc1" => "quelquechose", "truc2" => "autrechose"];
+     
+      header('Access-Control-Allow-Origin: *');
+
+      
+      echo json_encode($donneesExemple);
+
+
+           }
+
+
+    /**
+     * 
+     * affiche un gateau
+     * 
+     */
+    public function show()
+    {
+
+       /*  $userModel = new \Model\User();
+        $user = $userModel->getUser(); */
+
+
+/* 
+            $exemple_id= null;
+
+            if(!empty($_GET['id']) && ctype_digit($_GET['id'])){
+
+
+                $exemple_id = $_GET['id'];
+            }
+
+
+        $unObjetExemple = $this->model->find($exemple_id, $this->modelName);
+           
+        
+        
+
+        $titreDeLaPage = $unObjetExemple->name;
+  
+        $modelAutreExemple = new \Model\AutreExemple();
+        $autresDonnees = $modelAutreExemple->findAllByExemple($exemple_id); */
+        
+        
+       
+       
+        
+
+
+        \Rendering::render('exemples/exemple', compact('user','unObjetExemple', 'autresDonnees','titreDeLaPage'));
+
+    }
+
+     /**
+     * 
+     * affiche un gateau
+     * 
+     */
+    public function showApi()
+    {
+
+     /*    $userModel = new \Model\User();
+        $user = $userModel->getUser(); */
+
+
+
+          /*   $exemple_id= null;
+
+            if(!empty($_GET['id']) && ctype_digit($_GET['id'])){
+
+
+                $exemple_id = $_GET['id'];
+            }
+
+
+        
+        
+        
+    $exemple = $this->model->find($exemple_id, $this->modelName);
+           
+        
+        
+
+     
+  
+        $modelAutreExemple = new \Model\AutreExemple();
+       
+        
+        $autresDonnees = $modelAutreExemple->findAllByExemple($exemple_id);
+        
+        
+           // $recettes = [];
+       
+           header('Access-Control-Allow-Origin: *');
+            echo json_encode(
+                [
+                'exemple' => $exemple, 
+                'autresDonnees' => $autresDonnees
+                ]
+            ); */
+
+
+    }
+
+
+    /**
+     * 
+     * supprimer un gateau
+     */
+    public function suppr()
+    {
+        /* $exemple_id = null;
+
+        if(!empty($_GET['id']) && ctype_digit($_GET['id'])){
+
+
+            $exemple_id = $_GET['id'];
+        }
+
+        if(!$exemple_id){
+            die("pas d'id de exemple donné");
+        }
+
+
+        //verifier si le exemple existe
+        $exemple = $this->model->find($exemple_id);
+
+        if(!$exemple){
+            die("exemple inexistant");
+        }
+
+        $this->model->delete($exemple_id);
+
+        \Http::redirect("index.php"); */
+    }
+  
+}

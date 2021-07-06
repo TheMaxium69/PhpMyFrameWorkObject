@@ -19,6 +19,7 @@ class Rendering
 
 
             extract($donnees);
+
         
             ob_start();
 

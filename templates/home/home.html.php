@@ -1,1 +1,3 @@
-<h3><?php echo $exemple; ?></h3>
+
+
+<h3><?php echo $contenu ?></h3>

@@ -23,18 +23,24 @@ abstract class Model
  * si inexistant
  * 
  * @param integer $id
- * @return array|bool
+ * 
+ * 
  */
-public function find(int $id)
+public function find(int $id, string $class, ? string $table = null)
 {
 
- 
+$sql = "SELECT * FROM {$this->table} WHERE id =:id";
 
-  $maRequete = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE id =:id");
+ if(!empty($table)){
+  $sql="SELECT * FROM $table WHERE id =:id";
+ }
+
+$maRequete = $this->pdo->prepare($sql);
+ 
 
   $maRequete->execute(['id' => $id]);
 
-  $item = $maRequete->fetchObject();
+  $item = $maRequete->fetchObject($class);
 
   return $item;
 
@@ -43,15 +49,15 @@ public function find(int $id)
  * retourne un tableau contenant tous les items de 
  * la table garages
  * 
- * @return array
+ * 
  */
-public function findAll(string $className) : array
+public function findAll(string $class)
 {
        
 
         $resultat =  $this->pdo->query("SELECT * FROM {$this->table}");
         
-        $items = $resultat->fetchAll( PDO::FETCH_CLASS, $className);
+        $items = $resultat->fetchAll(PDO::FETCH_CLASS, $class);
 
         return $items;
 

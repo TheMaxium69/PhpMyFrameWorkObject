@@ -9,11 +9,16 @@ abstract class Controller
 
      protected $modelName;
 
+     protected $user;
+
         public function __construct(){
 
             $this->model = new $this->modelName();
+
+
         }
 
+     
 
 
 }

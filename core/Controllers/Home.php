@@ -1,31 +1,36 @@
 <?php
+
 namespace Controllers;
-
-
 
 class Home extends Controller
 {
 
     protected $modelName = \Model\Exemple::class;
-    
+
 
     /**
-     * afficher l'accueil du site
+     * 
+     * affiche la liste des gateaux
      */
-
     public function index()
+    
     {
+        
+
+           /*  $userModel = new \Model\User();
+             $user = $userModel->getUser(); */
+        
+           
 
 
-        $exemple = "votre contenue";
+     /*  $donneesExemple = $this->model->findAll($this->modelName); */
+         
+        $contenu = "votreContenuIci";
 
-        //on fixe le titre de la page
-        $titreDeLaPage = "titre d'une page";
+         $titreDeLaPage = "Le titre de la page"; 
 
-        //on affiche
-        \Rendering::render("home/home",
-            compact('exemple', 'titreDeLaPage')
-        );
-
+        \Rendering::render('home/home', compact('contenu','titreDeLaPage')); 
     }
-}
+
+
+}   

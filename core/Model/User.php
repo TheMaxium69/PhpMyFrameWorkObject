@@ -1,98 +1,154 @@
 <?php
-
 namespace Model;
 
-use PDO;
-
 class User extends Model
+
+
 {
 
-    protected $table = "users";
+    protected $table = 'users';
+
 
     public $id;
+
     public $username;
-    private $password;
+
+    public $password;
+
     public $email;
 
-    function findByUsername(string $username)
+
+    public function isLoggedIn()
     {
-        $resultat =  $this->pdo->prepare('SELECT * FROM users WHERE username = :username');
-        $resultat->execute([
-            "username"=> $username
-        ]);
 
-        $user = $resultat->fetchObject();
+        if(isset($_SESSION["user"]["id"]) 
+        && !empty($_SESSION["user"]["id"])
+        ){
 
-        return $user;
+
+            return true;
+        }else{
+
+            return false;
+        }
+
+
+
     }
 
-    function login(string $username, string $password)
-    {
-        $user = $this->findByUsername($username);
+    public function getUser(){
 
-        if($user && $user->password == $password){
-                $userTab = [
-                    "id" => $user->id,
-                    "name" => $user->username,
-                    "email" => $user->email,
-                    "password" => $user->password
-                ];
-                $_SESSION["user"]= $userTab;
-                return true;
+        if($this->isLoggedIn()){
+
+              $user =  $this->find($_SESSION["user"]["id"], \Model\User::class);
+              return $user;
+
         }else{
             return false;
         }
+
     }
 
-    function isLoggedIn(){
-        if(isset($_SESSION['user'])){
-            $user = $_SESSION['user']; 
-            if($user['id']){
+        public function signIn($username, $password)
+        {
+            $user = $this->findByUsername($username);
+            if(!$user){
+                die('existe pas');
+            }
+
+            if($password == $user->password){
+
+               
+               
+
+                $_SESSION["user"] = [
+                                        "id" => $user->id,
+                                        "username" => $user->username,
+                                        "email" => $user->email
+
+                                    ];
+
+                
                 return true;
             }else{
                 return false;
             }
+
+
+        }
+
+        public function findByUsername(string $username)
+        {
+
+            $sql = $this->pdo->prepare("SELECT * FROM users WHERE username = :username");
+            $sql->execute(['username' => $username]);
+            $user = $sql->fetchObject(\Model\User::class);
+            
+            if(!$user){
+                return false;
+            }else{
+                return $user;
+            }
+
+
+        }
+
+
+        public function signOut()
+        {
+            session_unset();
+        }
+
+       public function signUp(string $username, string $email, string $password)
+       {
+
+        $maRequete = $this->pdo->prepare("INSERT INTO users (username, password, email) 
+        VALUES (:username, :password, :email)");
+
+          $maRequete->execute([
+          'username' => $username,
+          'password' => $password,
+          'email' => $email
+       
+
+          ]);
+
+       }
+
+       /**
+        * 
+        * est-ce que je suis l'auteur de ca - ca est le parametre : une recette ou un gateau
+        */
+
+
+       public function isAuthor(object $gateauOuRecette)
+       //  public function isAuthor(object $gateauOuRecette)
+       {
+            /// on veut comparer $this-id au user_id de cette recette ou ce gateau
+
+            if( $this->id == $gateauOuRecette->user_id ){
+                return true;
+            }else{
+
+                return false;
+            }
+
+       }
+
+       public function hasMade(object $gateauOuRecette)
+       {
+       
+                $modelMake = new \Model\Make();
+        if(   $modelMake->findByUser( $this ,  $gateauOuRecette)                   )
+        {
+            return true;
         }else{
             return false;
         }
-    }
 
-    function loggout(){
-        session_unset();
-    }
-
-    function getUser(){
-            $userSession = $_SESSION['user']; 
-            $user = new User();
-            $user->id = $userSession['id'];
-            $user->username = $userSession['name'];
-            $user->email = $userSession['email'];
-            $user->password = $userSession['password'];
-            return $user;
-    }
-
-    function signup(User $user){
-        
-        $maRequeteAddUser = $this->pdo->prepare("INSERT INTO users (username, email, password) 
-          VALUES (:username, :email, :password)");
-
-        $maRequeteAddUser->execute([
-            'username' => $user->username,
-            'email' => $user->email,
-            'password' => $user->password
-        ]);
-    }
-
-
-    function set(User $user, string $password){
-        $user->password = $password;
-    }
+       }
     
-    function findByUser(int $user_id){
-        $maRequeteUserFind =  $this->pdo->prepare("SELECT * FROM `users` WHERE `id`=:id");
-        $maRequeteUserFind->execute(["id"=> $user_id]);
 
-        $user = $maRequeteUserFind->fetchObject();
-        return $user;
-    }
+
+    
 }
